@@ -66,7 +66,7 @@
         "name": "PowerShell",
         "opacity": 51,
         "padding": "35",
-        "startingDirectory": "D:\\Abdka\\OneDrive\\Desktop",
+        "startingDirectory": "%USERPROFILE%",
         "useAcrylic": true
       },
       {

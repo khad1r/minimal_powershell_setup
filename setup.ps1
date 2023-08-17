@@ -27,7 +27,7 @@ if (!(Test-Path -Path $PROFILE -PathType Leaf)) {
             }
         }
 
-        Invoke-RestMethod https://github.com/ChrisTitusTech/powershell-profile/raw/main/Microsoft.PowerShell_profile.ps1 -o $PROFILE
+        Invoke-RestMethod https://raw.githubusercontent.com/khad1r/minimal_powershell_setup/main/Microsoft.PowerShell_profile.ps1 -o $PROFILE
         Write-Host "The profile @ [$PROFILE] has been created."
     }
     catch {
@@ -37,7 +37,7 @@ if (!(Test-Path -Path $PROFILE -PathType Leaf)) {
 # If the file already exists, show the message and do nothing.
 else {
     Get-Item -Path $PROFILE | Move-Item -Destination oldprofile.ps1
-    Invoke-RestMethod https://github.com/ChrisTitusTech/powershell-profile/raw/main/Microsoft.PowerShell_profile.ps1 -OutFile $PROFILE
+    Invoke-RestMethod https://raw.githubusercontent.com/khad1r/minimal_powershell_setup/main/Microsoft.PowerShell_profile.ps1 -o $PROFILE
     Write-Host "The profile @ [$PROFILE] has been created and old profile removed."
 }
 
@@ -50,7 +50,7 @@ $profileFolderPath = Split-Path $PROFILE
 
 $themePath = "$profileFolderPath/minimal_shell.omp.json"
 
-wget -O $themePath https://raw.githubusercontent.com/yourusername/yourrepository/master/minimal_shell.omp.json
+wget -O $themePath https://raw.githubusercontent.com/khad1r/minimal_powershell_setup/main/minimal_shell.omp.json
 
 # Define the custom string to replace the first line with
 $customString = "$ohMyPoshDir init pwsh --config '$themePath' | Invoke-Expression"

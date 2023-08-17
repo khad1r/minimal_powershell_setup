@@ -1,17 +1,52 @@
-C:\path\to\oh-my-posh.exe init pwsh --config 'C:\path\to\WindowsPowerShell\minimal_shell.omp.json' | Invoke-Expression
+C:\Users\Abdka\AppData\Local\Programs\oh-my-posh\bin\oh-my-posh.exe init pwsh --config 'D:\Abdka\OneDrive\Documents\WindowsPowerShell\abdka.theme.oh-my-posh.json' | Invoke-Expression
+Set-PSReadlineOption -HistorySavePath 'D:\Abdka\OneDrive\Documents\WindowsPowerShell\History.txt'
 Set-PSReadLineOption -PredictionSource History
 Set-PSReadLineOption -PredictionViewStyle ListView
 Import-Module -Name Terminal-Icons
+
+# Compute file hashes - useful for checking successful downloads 
+function Compute-Hash {
+    param (
+        [string]$Value,
+        [string]$Algorithm
+    )
+
+    if (Test-Path $Value -PathType Leaf) {
+        Get-FileHash -Path $Value -Algorithm $Algorithm
+    } else {
+        $StringStream = [IO.MemoryStream]::new([byte[]][char[]]$Value)
+        Get-FileHash -InputStream $StringStream -Algorithm $Algorithm
+    }
+}
+function md5($value) { Compute-Hash $value MD5 }
+function sha1($value) { Compute-Hash $value SHA1 }
+function sha256($value) { Compute-Hash $value SHA256 }
+
 function sudo {
     Start-Process @args -verb runas
 }
+
 function Get-Hotkeys {
     Get-PSReadLineKeyHandler | Format-Table -AutoSize -Property Key, Function, Description
+}
+function Get-PubIP {
+    (Invoke-WebRequest http://ifconfig.me/ip ).Content
 }
 function Start-ElevatedPS {
     param([ScriptBlock]$code)
 
     Start-Process -FilePath powershell.exe -Verb RunAs -ArgumentList $code
+}
+function find-file($name) {
+    Get-ChildItem -recurse -filter "*${name}*" -ErrorAction SilentlyContinue | ForEach-Object {
+        $place_path = $_.directory
+        Write-Output "${place_path}\${_}"
+    }
+}
+function unzip ($file) {
+    Write-Output("Extracting", $file, "to", $pwd)
+    $fullFile = Get-ChildItem -Path $pwd -Filter .\cove.zip | ForEach-Object { $_.FullName }
+    Expand-Archive -Path $fullFile -DestinationPath $pwd
 }
 # Related: https://github.com/PowerShell/PSReadLine/issues/1778
 Set-PSReadLineKeyHandler -Key Shift+Delete `
@@ -29,5 +64,6 @@ Set-PSReadLineKeyHandler -Key Shift+Delete `
     $history = $history -replace "(?m)^$toRemove\r\n", ""
     Set-Content (Get-PSReadLineOption).HistorySavePath $history
 }
-clear
 
+
+clear

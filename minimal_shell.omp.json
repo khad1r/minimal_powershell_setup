@@ -1,0 +1,89 @@
+{
+  "$schema": "https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/main/themes/schema.json",
+  "blocks": [
+    {
+      "alignment": "left",
+      "newline": true,
+      "segments": [
+        {
+          "foreground": "#4ec0ea",
+          "leading_diamond": "<#BFA8BF>\u256d\u2500</>",
+          "properties": {
+            "folder_icon": "\u002F",
+            "folder_separator_icon": "\u002F",
+            "home_icon": "home",
+            "style": "agnoster_full"
+          },
+          "style": "diamond",
+          "template": " \ue5ff {{ .Path }}",
+          "type": "path"
+        },
+        {
+          "foreground": "#ffffff",
+          "background": "#d58ab2",
+          "leading_diamond": " <transparent,#d58ab2>\ue0b0</>",
+          "properties": {
+            "branch_icon": "\ue725 ",
+            "fetch_stash_count": true,
+            "fetch_status": true,
+            "fetch_upstream_icon": true,
+            "fetch_worktree_count": true
+          },
+          "style": "diamond",
+          "trailing_diamond": "\ue0b0",
+          "template": " {{ .HEAD }} {{ .UpstreamIcon }}",
+          "type": "git"
+        }
+      ],
+      "type": "prompt"
+    },
+    {
+      "alignment": "right",
+      "segments": [
+        {
+          "foreground": "#5bec9c",
+          "properties": {
+            "time_format": "Monday <#fff>@ 3:04 PM </>"
+          },
+          "style": "diamond",
+          "template": " {{ .CurrentDate | date .Format }} ",
+          "type": "time"
+        }
+      ],
+      "type": "prompt"
+    },
+    {
+      "alignment": "left",
+      "newline": true,
+      "segments": [
+        {
+          "foreground": "#f16c6c",
+          "leading_diamond": "<#BFA8BF>\u2570\u2500</> ",
+          "properties": {
+            "display_host": true
+          },
+          "style": "diamond",
+          "template": "{{ .UserName }}@<#fff>{{ .HostName }}</>",
+          "type": "session"
+        },
+        {
+          "foreground": "#f16c6c",
+          "foreground_templates": ["{{ if gt .Code 0 }}#fff{{ end }}"],
+          "properties": {
+            "always_enabled": true
+          },
+          "style": "plain",
+          "template": " | ",
+          "type": "status"
+        }
+      ],
+      "type": "prompt"
+    }
+  ],
+  "transient_prompt": {
+    "background": "transparent",
+    "foreground": "#ffffff",
+    "template": "<#f16c6c>{{ .UserName }}</> @ {{ now | date \"3:04 PM\"}} <#f16c6c>|</> "
+  },
+  "version": 2
+}

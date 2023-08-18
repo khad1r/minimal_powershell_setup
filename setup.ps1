@@ -5,11 +5,11 @@ $scriptPath = $MyInvocation.MyCommand.Definition
 $profileFolderPath = Split-Path $PROFILE
 
 if (!$isAdmin) {
-    Write-Host "Script is not running as administrator. Attempting to restart with administrator privileges..."
+    Write-Host "Script is not running as administrator. Try With Elevated Previledge..."
     
-    $argumentList = "-NoProfile -ExecutionPolicy Bypass -File `"$scriptPath`""
+    # $argumentList = "-NoProfile -ExecutionPolicy Bypass -File '$scriptPath'"
     
-    Start-Process "powershell" -ArgumentList $argumentList -Verb RunAs
+    # Start-Process "powershell" -ArgumentList $argumentList -Verb RunAs
     Exit
 }
 
@@ -50,7 +50,6 @@ $Env:Path = [System.Environment]::GetEnvironmentVariable("Path","Machine") + ";"
 # Get OhMyPosh Directory
 $ohMyPoshDir = (Get-Command oh-my-posh).Source
 
-
 # Get The Oh-My-Posh theme
 $themePath = "$profileFolderPath/minimal_shell.omp.json"
 wget -O $themePath https://raw.githubusercontent.com/khad1r/minimal_powershell_setup/main/minimal_shell.omp.json
@@ -62,20 +61,12 @@ $customString = "$ohMyPoshDir init pwsh --config '$themePath' | Invoke-Expressio
 # Read the content of the file
 $fileContent = Get-Content -Path $PROFILE -Raw
 # Find the index of the first line break
-$firstLineBreakIndex = $fileContent.IndexOf("`r`n")
-if ($firstLineBreakIndex -ge 0) {
-    # Extract the part of the content after the first line break
-    $remainingContent = $fileContent.Substring($firstLineBreakIndex + 2)
-
-    # Construct the new content with the custom string
-    $newContent = "$customString`r`n$remainingContent"
-
-    # Write the new content back to the file
-    $newContent | Set-Content -Path $filePath
-    Write-Host "First line replaced with Corect Oh My Posh Init."
-} else {
-    Write-Host "File is empty or does not contain a line break."
-}
+$remainingContent = $fileContent.Substring(2)
+# Construct the new content with the custom string
+$newContent = "$customString`r`n$remainingContent"
+# Write the new content back to the file
+$newContent | Set-Content -Path $PROFILE
+Write-Host "Added Oh My Posh Init."
 
 Write-Host "Installing Nerd Font......"
 # Font Install
@@ -93,6 +84,7 @@ if ($fontFamilies -notcontains "CaskaydiaCove NF") {
     Expand-Archive -Path ".\CascadiaCode.zip" -DestinationPath ".\CascadiaCode" -Force
     $destination = (New-Object -ComObject Shell.Application).Namespace(0x14)
     Get-ChildItem -Path ".\CascadiaCode" -Recurse -Filter "*.ttf" | ForEach-Object {
+        Write-Host "        Installing Font $($_.Name)......"
         If (-not(Test-Path "C:\Windows\Fonts\$($_.Name)")) {        
             # Install font
             $destination.CopyHere($_.FullName, 0x10)
@@ -118,6 +110,10 @@ Install-Module -Name Terminal-Icons -Repository PSGallery
 
 if (test-path $scriptPath) { rm $scriptPath}
 
-. $PROFILE
-
-Write-Host "Done, Thank You..."
+if (Get-Command wt) { 
+    Start wt
+    Exit
+}
+Write-Host "Windows Terminal Is Not Installed !!!!, Start Powershell"
+start powershell
+Exit

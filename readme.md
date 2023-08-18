@@ -21,6 +21,9 @@ advantage:
 
 ## Install (Powershell Run As Administrator)
 
+> [!WARNING]  
+> Make sure you have Winget Installed. [[See More..]](https://learn.microsoft.com/en-us/windows/package-manager/winget/)
+
 is recommend to run in elevated powershell:
 
 ```powershell
@@ -44,6 +47,8 @@ irm "https://raw.githubusercontent.com/khad1r/minimal_powershell_setup/main/setu
 
 ---
 
-1. To Edit the theme use `Code $env:POSH_THEME` | `notepad $env:POSH_THEME`
-1. To Edit the profile use `Code $PROFILE` | `notepad $PROFILE`
-1. for windows terminal `Setting.json` copy the content of [windows terminal.setting.json](<windows terminal.setting.json>) to `setting.json`
+1. Try `sudo wt` | `sudo powershell` to start terminal as admin like `sudo su` in linux.
+1. To Edit the theme use `Code $env:POSH_THEME` | `notepad $env:POSH_THEME`.
+1. To Edit the profile use `Code $PROFILE` | `notepad $PROFILE`.
+1. for windows terminal `Setting.json` copy the content of [windows terminal.setting.json](<windows terminal.setting.json>) to `setting.json`.
+1. for native powershell [see this](https://www.isumsoft.com/windows-10/change-windows-powershell-font-layout.html) for customize the appearance.

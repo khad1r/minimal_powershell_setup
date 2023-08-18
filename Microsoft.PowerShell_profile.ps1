@@ -1,4 +1,3 @@
-C:\Path\to\oh-my-posh.exe init pwsh --config 'C:\path\to\theme.json' | Invoke-Expression
 Set-PSReadLineOption -PredictionSource History
 Set-PSReadLineOption -PredictionViewStyle ListView
 Import-Module -Name Terminal-Icons

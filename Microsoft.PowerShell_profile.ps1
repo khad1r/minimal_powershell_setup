@@ -1,5 +1,4 @@
-C:\Users\Abdka\AppData\Local\Programs\oh-my-posh\bin\oh-my-posh.exe init pwsh --config 'D:\Abdka\OneDrive\Documents\WindowsPowerShell\abdka.theme.oh-my-posh.json' | Invoke-Expression
-Set-PSReadlineOption -HistorySavePath 'D:\Abdka\OneDrive\Documents\WindowsPowerShell\History.txt'
+C:\Path\to\oh-my-posh.exe init pwsh --config 'C:\path\to\theme.json' | Invoke-Expression
 Set-PSReadLineOption -PredictionSource History
 Set-PSReadLineOption -PredictionViewStyle ListView
 Import-Module -Name Terminal-Icons

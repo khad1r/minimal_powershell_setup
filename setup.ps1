@@ -2,6 +2,7 @@
 $currentUser = New-Object Security.Principal.WindowsPrincipal([Security.Principal.WindowsIdentity]::GetCurrent())
 $isAdmin = $currentUser.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
 $scriptPath = $MyInvocation.MyCommand.Definition
+$profileFolderPath = Split-Path $PROFILE
 
 if (!$isAdmin) {
     Write-Host "Script is not running as administrator. Attempting to restart with administrator privileges..."
@@ -34,24 +35,28 @@ if (!(Test-Path -Path $PROFILE -PathType Leaf)) {
         throw $_.Exception.Message
     }
 }
-# If the file already exists, show the message and do nothing.
+# If the file already exists, move to oldProfile.ps1.
 else {
-    Get-Item -Path $PROFILE | Move-Item -Destination oldprofile.ps1
+    Get-Item -Path $PROFILE | Move-Item -Destination $profileFolderPath/oldprofile.ps1
     Invoke-RestMethod https://raw.githubusercontent.com/khad1r/minimal_powershell_setup/main/Microsoft.PowerShell_profile.ps1 -o $PROFILE
-    Write-Host "The profile @ [$PROFILE] has been created and old profile removed."
+    Write-Host "The profile @ [$PROFILE] has been created and old profile has been moved @ [$profileFolderPath/oldprofile.ps1]."
 }
-
-
+# Instaling The Oh-My-Posh
 winget install JanDeDobbeleer.OhMyPosh -s winget
 
+# Reloading Path Environment Variable
+$Env:Path = [System.Environment]::GetEnvironmentVariable("Path","Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path","User")
+
+# Get OhMyPosh Directory
 $ohMyPoshDir = (Get-Command oh-my-posh).Source
 
-$profileFolderPath = Split-Path $PROFILE
 
+# Get The Oh-My-Posh theme
 $themePath = "$profileFolderPath/minimal_shell.omp.json"
-
 wget -O $themePath https://raw.githubusercontent.com/khad1r/minimal_powershell_setup/main/minimal_shell.omp.json
 
+
+### Refactor the OhMyPosh Init in profile file
 # Define the custom string to replace the first line with
 $customString = "$ohMyPoshDir init pwsh --config '$themePath' | Invoke-Expression"
 # Read the content of the file
@@ -72,6 +77,7 @@ if ($firstLineBreakIndex -ge 0) {
     Write-Host "File is empty or does not contain a line break."
 }
 
+Write-Host "Installing Nerd Font......"
 # Font Install
 # Get all installed font families
 [void] [System.Reflection.Assembly]::LoadWithPartialName("System.Drawing")
@@ -98,9 +104,13 @@ if ($fontFamilies -notcontains "CaskaydiaCove NF") {
     Remove-Item -Path ".\CascadiaCode.zip" -Force
 }
 
+Write-Host "Set The Execution Policy......"
+
 Set-ExecutionPolicy -ExecutionPolicy RemoteSigned CurrentUser -force
 
 Set-ExecutionPolicy -ExecutionPolicy RemoteSigned LocalMachine -force
+
+Write-Host "Updating PSReadLine And Instaling Terminal-Icons ....."
 
 Install-Module -Name PSReadLine -RequiredVersion 2.2.6 -force
 
@@ -109,3 +119,5 @@ Install-Module -Name Terminal-Icons -Repository PSGallery
 if (test-path $scriptPath) { rm $scriptPath}
 
 . $PROFILE
+
+Write-Host "Done, Thank You..."

@@ -46,6 +46,11 @@ function unzip ($file) {
     $fullFile = Get-ChildItem -Path $pwd -Filter .\cove.zip | ForEach-Object { $_.FullName }
     Expand-Archive -Path $fullFile -DestinationPath $pwd
 }
+
+# Create an alias for Restart-Computer with -Firmware switch
+New-Alias -Name ToTheBios -Value { Restart-Computer -Firmware }
+new-alias grep findstr
+
 # Related: https://github.com/PowerShell/PSReadLine/issues/1778
 Set-PSReadLineKeyHandler -Key Shift+Delete `
     -BriefDescription RemoveFromHistory `

@@ -48,8 +48,9 @@ function unzip ($file) {
 }
 
 # Create an alias for Restart-Computer with -Firmware switch
-New-Alias -Name ToTheBios -Value { Restart-Computer -Firmware }
-new-alias grep findstr
+function ToTheBios { 
+    shutdown /r /fw /f /t 0 
+}
 
 # Related: https://github.com/PowerShell/PSReadLine/issues/1778
 Set-PSReadLineKeyHandler -Key Shift+Delete `

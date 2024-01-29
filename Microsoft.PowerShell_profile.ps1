@@ -1,5 +1,6 @@
 Set-PSReadLineOption -PredictionSource History
 Set-PSReadLineOption -PredictionViewStyle ListView
+Set-PSReadlineKeyHandler -Key Tab -Function MenuComplete
 Import-Module -Name Terminal-Icons
 
 # Compute file hashes - useful for checking successful downloads 

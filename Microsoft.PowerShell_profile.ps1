@@ -24,7 +24,12 @@ function sha256($value) { Compute-Hash $value SHA256 }
 function sudo {
     Start-Process @args -verb runas
 }
-
+function cdf {
+    Get-ChildItem . -Recurse -Attributes Directory | Invoke-Fzf | Set-Location
+}
+function Open-File{
+    Get-ChildItem . -Recurse -Attributes !Directory | Invoke-Fzf | % { & "$_" }
+}
 function Get-Hotkeys {
     Get-PSReadLineKeyHandler | Format-Table -AutoSize -Property Key, Function, Description
 }

@@ -44,6 +44,12 @@ else {
 # Instaling The Oh-My-Posh
 winget install JanDeDobbeleer.OhMyPosh -s winget
 
+#Install Scooop & Fzf
+iwr -useb get.scoop.sh | iex 
+scoop install fzf
+Install-Module -Name PSFzf -Scope CurrentUser -Force
+
+
 # Reloading Path Environment Variable
 $Env:Path = [System.Environment]::GetEnvironmentVariable("Path","Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path","User")
 

@@ -110,7 +110,11 @@ if ($fontFamilies -notcontains "CaskaydiaCove NF") {
     Remove-Item -Path ".\CascadiaCode" -Recurse -Force
     Remove-Item -Path ".\CascadiaCode.zip" -Force
 }
+function Start-ElevatedPS {
+    param([ScriptBlock]$code)
 
+    Start-Process -FilePath powershell.exe -Verb RunAs -ArgumentList $code
+}
 Write-Host "Set The Execution Policy......"
 
 Set-ExecutionPolicy -ExecutionPolicy RemoteSigned CurrentUser -force
@@ -119,9 +123,9 @@ Set-ExecutionPolicy -ExecutionPolicy RemoteSigned CurrentUser -force
 
 Write-Host "Updating PSReadLine And Instaling Terminal-Icons ....."
 
-Install-Module -Name PSReadLine -RequiredVersion 2.2.6 -force
+Start-ElevatedPS{Install-Module -Name PSReadLine -RequiredVersion 2.2.6 -force}
 
-Install-Module -Name Terminal-Icons -Repository PSGallery
+Start-ElevatedPS{Install-Module -Name Terminal-Icons -Repository PSGallery}
 
 if (test-path $scriptPath) { rm $scriptPath}
 

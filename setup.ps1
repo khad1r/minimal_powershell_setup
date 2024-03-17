@@ -4,14 +4,14 @@ $isAdmin = $currentUser.IsInRole([Security.Principal.WindowsBuiltInRole]::Admini
 $scriptPath = $MyInvocation.MyCommand.Definition
 $profileFolderPath = Split-Path $PROFILE
 
-if (!$isAdmin) {
-    Write-Host "Script is not running as administrator. Try With Elevated Previledge..."
+# if (!$isAdmin) {
+#     Write-Host "Script is not running as administrator. Try With Elevated Previledge..."
     
-    # $argumentList = "-NoProfile -ExecutionPolicy Bypass -File '$scriptPath'"
+#     # $argumentList = "-NoProfile -ExecutionPolicy Bypass -File '$scriptPath'"
     
-    # Start-Process "powershell" -ArgumentList $argumentList -Verb RunAs
-    Exit
-}
+#     # Start-Process "powershell" -ArgumentList $argumentList -Verb RunAs
+#     Exit
+# }
 
 #If the file does not exist, create it.
 if (!(Test-Path -Path $PROFILE -PathType Leaf)) {
@@ -42,13 +42,13 @@ else {
     Write-Host "The profile @ [$PROFILE] has been created and old profile has been moved @ [$profileFolderPath/oldprofile.ps1]."
 }
 # Instaling The Oh-My-Posh
-winget install JanDeDobbeleer.OhMyPosh -s winget
+# winget install JanDeDobbeleer.OhMyPosh -s winget
 
 #Install Scooop & Fzf
 iex "& {$(irm get.scoop.sh)} -RunAsAdmin"
 scoop install fzf
 Install-Module -Name PSFzf -Scope CurrentUser -Force
-
+scoop install https://github.com/JanDeDobbeleer/oh-my-posh/releases/latest/download/oh-my-posh.json
 
 # Reloading Path Environment Variable
 $Env:Path = [System.Environment]::GetEnvironmentVariable("Path","Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path","User")
@@ -106,7 +106,7 @@ Write-Host "Set The Execution Policy......"
 
 Set-ExecutionPolicy -ExecutionPolicy RemoteSigned CurrentUser -force
 
-Set-ExecutionPolicy -ExecutionPolicy RemoteSigned LocalMachine -force
+# Set-ExecutionPolicy -ExecutionPolicy RemoteSigned LocalMachine -force
 
 Write-Host "Updating PSReadLine And Instaling Terminal-Icons ....."
 

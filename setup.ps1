@@ -45,7 +45,16 @@ else {
 # winget install JanDeDobbeleer.OhMyPosh -s winget
 
 #Install Scooop & Fzf
-iex "& {$(irm get.scoop.sh)} -RunAsAdmin"
+# iex "& {$(irm get.scoop.sh)} -RunAsAdmin"
+# Check if Scoop is installed
+if (-not (Get-Command scoop -ErrorAction SilentlyContinue)) {
+    # Install Scoop
+    iex "& {$(irm get.scoop.sh)} -RunAsAdmin"
+    Write-Host "Scoop has been installed successfully!"
+} else {
+    Write-Host "Scoop is already installed."
+}
+
 scoop install fzf
 Install-Module -Name PSFzf -Scope CurrentUser -Force
 scoop install https://github.com/JanDeDobbeleer/oh-my-posh/releases/latest/download/oh-my-posh.json

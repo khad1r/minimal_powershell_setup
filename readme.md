@@ -27,6 +27,7 @@ advantage:
 is recommend to run in elevated powershell:
 
 ```powershell
+Set-ExecutionPolicy -ExecutionPolicy RemoteSigned CurrentUser -force
 irm "https://raw.githubusercontent.com/khad1r/minimal_powershell_setup/main/setup.ps1" | iex
 ```
 

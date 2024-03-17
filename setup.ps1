@@ -45,7 +45,7 @@ else {
 winget install JanDeDobbeleer.OhMyPosh -s winget
 
 #Install Scooop & Fzf
-iwr -useb get.scoop.sh | iex 
+iex "& {$(irm get.scoop.sh)} -RunAsAdmin"
 scoop install fzf
 Install-Module -Name PSFzf -Scope CurrentUser -Force
 

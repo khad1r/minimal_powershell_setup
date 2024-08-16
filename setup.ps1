@@ -1,17 +1,19 @@
 # Check if the script is running as administrator
 $currentUser = New-Object Security.Principal.WindowsPrincipal([Security.Principal.WindowsIdentity]::GetCurrent())
 $isAdmin = $currentUser.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
-$scriptPath = $MyInvocation.MyCommand.Definition
-$profileFolderPath = Split-Path $PROFILE
 
-# if (!$isAdmin) {
-#     Write-Host "Script is not running as administrator. Try With Elevated Previledge..."
+if (-not $isAdmin) {
+    Write-Host "Script is not running as administrator. Relaunching with elevated privileges..."
     
-#     # $argumentList = "-NoProfile -ExecutionPolicy Bypass -File '$scriptPath'"
+    # Relaunch the script with elevated privileges
+    $scriptPath = $MyInvocation.MyCommand.Definition
+    $argumentList = "-NoProfile -ExecutionPolicy Bypass -File `"$scriptPath`""
     
-#     # Start-Process "powershell" -ArgumentList $argumentList -Verb RunAs
-#     Exit
-# }
+    Start-Process "powershell" -ArgumentList $argumentList -Verb RunAs
+    Exit
+}
+
+$profileFolderPath = Split-Path $PROFILE
 
 #If the file does not exist, create it.
 if (!(Test-Path -Path $PROFILE -PathType Leaf)) {
@@ -46,42 +48,34 @@ else {
 
 #Install Scooop & Fzf
 # iex "& {$(irm get.scoop.sh)} -RunAsAdmin"
-# Check if Scoop is installed
+Check if Scoop is installed
 if (-not (Get-Command scoop -ErrorAction SilentlyContinue)) {
     # Install Scoop
-    iex "& {$(irm get.scoop.sh)} -RunAsAdmin"
+    Invoke-Expression "& {$(Invoke-RestMethod get.scoop.sh)} -RunAsAdmin"
     Write-Host "Scoop has been installed successfully!"
-} else {
+}
+else {
     Write-Host "Scoop is already installed."
 }
 
-scoop install fzf
+Write-Host ""
+winget install fzf
+winget install starship
+winget install "Flow Launcher"
+winget install neovim.neovim
+winget install clink
+"load(io.popen('starship init cmd'):read('*a'))()" | Set-Content -Path "$env:LocalAppData\clink\starship.lua"
 Install-Module -Name PSFzf -Scope CurrentUser -Force
-scoop install https://github.com/JanDeDobbeleer/oh-my-posh/releases/latest/download/oh-my-posh.json
+Install-Module posh-git -Scope CurrentUser
+Install-Module -Name PSReadLine -Scope CurrentUser -RequiredVersion 2.2.6 -force
+Install-Module -Name Terminal-Icons -Scope CurrentUser -Repository PSGallery
 
 # Reloading Path Environment Variable
-$Env:Path = [System.Environment]::GetEnvironmentVariable("Path","Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path","User")
-
-# Get OhMyPosh Directory
-$ohMyPoshDir = (Get-Command oh-my-posh).Source
+$Env:Path = [System.Environment]::GetEnvironmentVariable("Path", "Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path", "User")
 
 # Get The Oh-My-Posh theme
-$themePath = "$profileFolderPath/minimal_shell.omp.json"
-wget -O $themePath https://raw.githubusercontent.com/khad1r/minimal_powershell_setup/main/minimal_shell.omp.json
-
-
-### Refactor the OhMyPosh Init in profile file
-# Define the custom string to replace the first line with
-$customString = "$ohMyPoshDir init pwsh --config '$themePath' | Invoke-Expression"
-# Read the content of the file
-$fileContent = Get-Content -Path $PROFILE -Raw
-# Find the index of the first line break
-$remainingContent = $fileContent.Substring(2)
-# Construct the new content with the custom string
-$newContent = "$customString`r`n$remainingContent"
-# Write the new content back to the file
-$newContent | Set-Content -Path $PROFILE
-Write-Host "Added Oh My Posh Init."
+$themePath = "$HOME/.config/starshp.toml"
+Invoke-WebRequest -O $themePath https://raw.githubusercontent.com/khad1r/minimal_powershell_setup/main/starshp.toml
 
 Write-Host "Installing Nerd Font......"
 # Font Install
@@ -110,29 +104,19 @@ if ($fontFamilies -notcontains "CaskaydiaCove NF") {
     Remove-Item -Path ".\CascadiaCode" -Recurse -Force
     Remove-Item -Path ".\CascadiaCode.zip" -Force
 }
-function Start-ElevatedPS {
-    param([ScriptBlock]$code)
-
-    Start-Process -FilePath powershell.exe -Verb RunAs -ArgumentList $code
-}
 Write-Host "Set The Execution Policy......"
 
 Set-ExecutionPolicy -ExecutionPolicy RemoteSigned CurrentUser -force
 
 # Set-ExecutionPolicy -ExecutionPolicy RemoteSigned LocalMachine -force
 
-Write-Host "Updating PSReadLine And Instaling Terminal-Icons ....."
 
-Start-ElevatedPS{Install-Module -Name PSReadLine -RequiredVersion 2.2.6 -force}
-
-Start-ElevatedPS{Install-Module -Name Terminal-Icons -Repository PSGallery}
-
-if (test-path $scriptPath) { rm $scriptPath}
+if (test-path $scriptPath) { Remove-Item $scriptPath }
 
 if (Get-Command wt) { 
-    Start wt
+    Start-Process wt
     Exit
 }
 Write-Host "Windows Terminal Is Not Installed !!!!, Start Powershell"
-start powershell
+Start-Process powershell
 Exit

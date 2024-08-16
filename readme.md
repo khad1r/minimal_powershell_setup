@@ -17,7 +17,7 @@ advantage:
 - Command intelisense when hit `ctrl + space`
 - Some common linux command
 - terminal icon when doing `ls`, `ls | fw`, `ls | fl`
-- Delete a command from History with `shift + enter`
+- Delete a command from History with `shift + Delete`
 
 ## Install (Powershell Run As Administrator)
 

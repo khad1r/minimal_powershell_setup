@@ -29,7 +29,7 @@
       "command": {
         "action": "closeTab"
       },
-      "keys": "ctrl+w"
+      "keys": "ctrl+shift+w"
     }
   ],
   "copyFormatting": "none",
@@ -44,6 +44,8 @@
   "profiles": {
     "defaults": {
       "colorScheme": "One Half Dark",
+      "opacity": 62,
+      "useAcrylic": true,
       "useAtlasEngine": true
     },
     "list": [

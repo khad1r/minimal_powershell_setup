@@ -1,0 +1,84 @@
+# Luke Davis (http://luke.onl) Starship Configuration
+
+format = """
+$username \
+$directory \
+$fill\
+$nodejs\
+$rust\
+$golang\
+$php\
+$git_branch \
+$git_status\
+$time\
+\n$character"""
+
+add_newline = true
+
+[line_break]
+disabled = false
+
+[fill]
+symbol = " "
+
+[directory]
+format = "[in](italic) [$path](bold italic bright-blue)"
+truncation_length = 3
+truncation_symbol = "…/"
+home_symbol = "~"
+read_only = " "
+
+[directory.substitutions]
+"Documents" = "󰈙 "
+"Downloads" = " "
+"Music" = " "
+"Pictures" = " "
+
+[username]
+style_user = "bright-green bold"
+style_root = "bright-red bold"
+format = "[$user]($style)"
+disabled = false
+show_always = true
+
+[git_status]
+untracked = "[ ](green)"
+modified = "[ ](yellow)"
+staged = "[ ](green)"
+deleted = "[ ](red)"
+ahead = "[ ](bright-green)"
+behind = "[ ](bright-red)"
+diverged = "[󰦻 ](cyan)"
+conflicted = "[! ](red)"
+stashed = ""
+typechanged = ""
+renamed = ""
+up_to_date = ""
+format = '$all_status$ahead_behind'
+
+
+[nodejs]
+symbol = ""
+format = '$symbol $version'
+
+[rust]
+symbol = ""
+format = '$symbol $version'
+
+[golang]
+symbol = ""
+format = '$symbol $version'
+
+[php]
+symbol = ""
+format = '$symbol $version'
+
+
+[git_branch]
+format = '$symbol$branch'
+
+[time]
+disabled = false
+time_format = "%R"
+style = "fg:bright-white"
+format = '[$time]($style)'

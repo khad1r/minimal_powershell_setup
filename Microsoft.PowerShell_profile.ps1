@@ -2,6 +2,8 @@ Set-PSReadLineOption -PredictionSource History
 Set-PSReadLineOption -PredictionViewStyle ListView
 Set-PSReadlineKeyHandler -Key Tab -Function MenuComplete
 Import-Module -Name Terminal-Icons
+Import-Module posh-git
+Invoke-Expression (&starship init powershell)
 
 # Compute file hashes - useful for checking successful downloads 
 function Compute-Hash {
@@ -12,7 +14,8 @@ function Compute-Hash {
 
     if (Test-Path $Value -PathType Leaf) {
         Get-FileHash -Path $Value -Algorithm $Algorithm
-    } else {
+    }
+    else {
         $StringStream = [IO.MemoryStream]::new([byte[]][char[]]$Value)
         Get-FileHash -InputStream $StringStream -Algorithm $Algorithm
     }
@@ -27,7 +30,7 @@ function sudo {
 function cdf {
     Get-ChildItem . -Recurse -Attributes Directory | Invoke-Fzf | Set-Location
 }
-function Open-File{
+function Open-File {
     Get-ChildItem . -Recurse -Attributes !Directory | Invoke-Fzf | % { & "$_" }
 }
 function Get-Hotkeys {
@@ -57,6 +60,9 @@ function unzip ($file) {
 function ToTheBios { 
     shutdown /r /fw /f /t 0 
 }
+function Invoke-Starship-TransientFunction {
+    &starship module character
+}
 
 # Related: https://github.com/PowerShell/PSReadLine/issues/1778
 Set-PSReadLineKeyHandler -Key Shift+Delete `
@@ -74,6 +80,10 @@ Set-PSReadLineKeyHandler -Key Shift+Delete `
     $history = $history -replace "(?m)^$toRemove\r\n", ""
     Set-Content (Get-PSReadLineOption).HistorySavePath $history
 }
+# Enable-TransientPrompt
 
 
-clear
+#clear
+
+
+

@@ -61,7 +61,7 @@ function ToTheBios {
     shutdown /r /fw /f /t 0 
 }
 function Invoke-Starship-TransientFunction {
-    &starship module character
+    &starship module shell
 }
 
 # Related: https://github.com/PowerShell/PSReadLine/issues/1778
@@ -84,6 +84,3 @@ Set-PSReadLineKeyHandler -Key Shift+Delete `
 
 
 #clear
-
-
-

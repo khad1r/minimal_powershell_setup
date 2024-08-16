@@ -1,7 +1,6 @@
-# Luke Davis (http://luke.onl) Starship Configuration
-
 format = """
-$username \
+$status$shell$username \
+$hostname\
 $directory \
 $fill\
 $nodejs\
@@ -12,10 +11,35 @@ $git_branch \
 $git_status\
 $time\
 \n$character"""
-
+continuation_prompt = '▶▶ '
 add_newline = true
 
 [line_break]
+disabled = true
+
+# [character]
+# success_symbol = "[╰⎯](bold green)"
+# error_symbol = "[╰⎯](bold red)"
+
+[status]
+symbol = '[╭╴](bold red)'
+success_symbol = '[╭╴](bold green)'
+format = '$symbol'
+map_symbol = true
+disabled = true
+
+[hostname]
+ssh_only = false
+ssh_symbol = "🌐"
+detect_env_vars = ['!TMUX', 'SSH_CONNECTION']
+format = "$ssh_symbol @ [$hostname](italic dimmed yellow) "
+
+[shell]
+bash_indicator = '[bsh](bright-white)'
+zsh_indicator = '[zsh](bright-red)'
+powershell_indicator = '[psh](bright-blue)'
+cmd_indicator = '[cmd](bright-yellow)'
+format = '$indicator '
 disabled = false
 
 [fill]
@@ -23,8 +47,9 @@ symbol = " "
 
 [directory]
 format = "[in](italic) [$path](bold italic bright-blue)"
-truncation_length = 3
+truncation_length = 2
 truncation_symbol = "…/"
+fish_style_pwd_dir_length = 1
 home_symbol = "~"
 read_only = " "
 

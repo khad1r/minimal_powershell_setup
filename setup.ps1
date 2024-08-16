@@ -74,8 +74,8 @@ Install-Module -Name Terminal-Icons -Scope CurrentUser -Repository PSGallery
 $Env:Path = [System.Environment]::GetEnvironmentVariable("Path", "Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path", "User")
 
 # Get The Oh-My-Posh theme
-$themePath = "$HOME/.config/starshp.toml"
-Invoke-WebRequest -O $themePath https://raw.githubusercontent.com/khad1r/minimal_powershell_setup/main/starshp.toml
+$themePath = "$HOME/.config/starship.toml"
+Invoke-WebRequest -O $themePath https://raw.githubusercontent.com/khad1r/minimal_powershell_setup/main/starship.toml
 
 Write-Host "Installing Nerd Font......"
 # Font Install

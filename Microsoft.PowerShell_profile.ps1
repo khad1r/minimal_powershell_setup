@@ -63,6 +63,9 @@ function ToTheBios {
 function Invoke-Starship-TransientFunction {
     &starship module shell
 }
+function lk() {
+    Set-Location $(walk $args)
+}
 
 # Related: https://github.com/PowerShell/PSReadLine/issues/1778
 Set-PSReadLineKeyHandler -Key Shift+Delete `

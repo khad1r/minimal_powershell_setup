@@ -69,7 +69,8 @@ winget install antonmedv.walk
 "load(io.popen('starship init cmd'):read('*a'))()" | Set-Content -Path "$env:LocalAppData\clink\starship.lua"
 Install-Module -Name PSFzf -Scope CurrentUser -Force
 Install-Module posh-git -Scope CurrentUser
-Install-Module -Name PSReadLine -Scope CurrentUser -RequiredVersion 2.2.6 -force
+# Install-Module -Name PSReadLine -Scope CurrentUser -RequiredVersion 2.2.6 -force
+Install-Module -Name PSReadLine -Scope CurrentUser -force
 Install-Module -Name Terminal-Icons -Scope CurrentUser -Repository PSGallery
 
 # Reloading Path Environment Variable

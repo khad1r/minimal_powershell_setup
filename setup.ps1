@@ -48,7 +48,7 @@ else {
 
 #Install Scooop & Fzf
 # iex "& {$(irm get.scoop.sh)} -RunAsAdmin"
-Check if Scoop is installed
+# Check if Scoop is installed
 if (-not (Get-Command scoop -ErrorAction SilentlyContinue)) {
     # Install Scoop
     Invoke-Expression "& {$(Invoke-RestMethod get.scoop.sh)} -RunAsAdmin"
